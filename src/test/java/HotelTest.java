@@ -44,11 +44,36 @@ public class HotelTest {
     }
 
     @Test
+    public void cannotCheckInGuest(){
+        hotel.checkIn(guest1, singleRoom);
+        hotel.checkIn(guest1, singleRoom);
+        assertEquals(1, singleRoom.countRoomGuests());
+    }
+
+    @Test
     public void canCheckGuestOut(){
         hotel.checkIn(guest1, singleRoom);
         hotel.checkOut(singleRoom);
         assertEquals(0, singleRoom.countRoomGuests());
     }
 
+    @Test
+    public void canBookInGuest(){
+        Booking booking = hotel.bookRoom(guest1, singleRoom, 3);
+        assertEquals(297, booking.getTotalBill());
+    }
+
+    @Test
+    public void canNotBookInGuest(){
+        hotel.checkIn(guest1, singleRoom);
+        Booking booking = hotel.bookRoom(guest2, singleRoom, 3);
+        assertEquals(null, booking);
+    }
+
+    @Test
+    public void canGetAvailableRooms(){
+        hotel.checkIn(guest1, singleRoom);
+        assertEquals(1, hotel.getAvailableRooms().size());
+    }
 
 }

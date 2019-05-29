@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.BitSet;
 
 public class Hotel {
 
@@ -42,19 +43,30 @@ public class Hotel {
         }
     }
 
-    public void checkIn(Guest guest, Room room) {
+    public boolean checkIn(Guest guest, Room room) {
+        boolean checkedIn = false;
         if (room.getType() == "Single"){
             int roomIndex = this.singleRooms.indexOf(room);
-            this.singleRooms.get(roomIndex).addGuest(guest);
+            if(this.singleRooms.get(roomIndex).countRoomGuests() == 0) {
+                this.singleRooms.get(roomIndex).addGuest(guest);
+                checkedIn = true;
+            }
         }
         if (room.getType() == "Double"){
             int roomIndex = this.doubleRooms.indexOf(room);
-            this.doubleRooms.get(roomIndex).addGuest(guest);
+            if(this.doubleRooms.get(roomIndex).countRoomGuests() == 0) {
+                this.doubleRooms.get(roomIndex).addGuest(guest);
+                checkedIn = true;
+            }
         }
         if (room.getType() == "Conference"){
             int roomIndex = this.conferenceRooms.indexOf(room);
-            this.conferenceRooms.get(roomIndex).addGuest(guest);
+            if(this.conferenceRooms.get(roomIndex).countRoomGuests() == 0) {
+                this.conferenceRooms.get(roomIndex).addGuest(guest);
+                checkedIn = true;
+            }
         }
+        return checkedIn;
     }
 
     public void checkOut(Room room) {
@@ -70,5 +82,29 @@ public class Hotel {
             int roomIndex = this.conferenceRooms.indexOf(room);
             this.conferenceRooms.get(roomIndex).removeGuests();
         }
+    }
+
+    public Booking bookRoom(Guest guest, Room room, int numberOfNights) {
+        Booking booking = null;
+        if(this.checkIn(guest, room)){
+            booking = new Booking(room, numberOfNights);
+        }
+        return booking;
+    }
+
+
+    public ArrayList<Room> getAvailableRooms() {
+        ArrayList<Room> availableRooms = new ArrayList<Room>();
+        for(Room room : this.singleRooms){
+            if(room.countRoomGuests() == 0){
+                availableRooms.add(room);
+            }
+        }
+        for(Room room : this.doubleRooms){
+            if(room.countRoomGuests() == 0){
+                availableRooms.add(room);
+            }
+        }
+        return availableRooms;
     }
 }

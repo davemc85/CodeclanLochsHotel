@@ -30,12 +30,18 @@ public class Room {
         return number;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public int getRate() {
         return rate;
     }
 
     public void addGuest(Guest guest) {
-        this.roomGuests.add(guest);
+        if(this.countRoomGuests() < this.capacity) {
+            this.roomGuests.add(guest);
+        }
     }
 
     public void removeGuests() {

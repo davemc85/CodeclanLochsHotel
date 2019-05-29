@@ -36,6 +36,11 @@ public class RoomTest {
     }
 
     @Test
+    public void checkRoomHasName(){
+        assertEquals("Ness", singleRoom.getName());
+    }
+
+    @Test
     public void checkRoomHasRate(){
         assertEquals(500, conferenceRoom.getRate());
     }
@@ -51,6 +56,13 @@ public class RoomTest {
         singleRoom.addGuest(guest1);
         singleRoom.removeGuests();
         assertEquals(0, singleRoom.countRoomGuests());
+    }
+
+    @Test
+    public void canNotAddTooManyGuestsToRoom(){
+        singleRoom.addGuest(guest1);
+        singleRoom.addGuest(guest2);
+        assertEquals(1, singleRoom.countRoomGuests());
     }
 
 
